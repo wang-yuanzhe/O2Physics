@@ -267,7 +267,7 @@ struct hypertriton3bodyTrackMcinfo {
   Configurable<bool> loadResponseFromCCDB{"loadResponseFromCCDB", false, "Flag to load the response from the CCDB"};
   Configurable<bool> fatalOnPassNotAvailable{"fatalOnPassNotAvailable", true, "Flag to throw a fatal if the pass is not available in the retrieved CCDB object"};
 
-  o2::aod::pidtofgeneric::TofPidNewCollision<ColwithEvTimes::iterator, MCLabeledTracksIU::iterator> bachelorTOFPID;
+  o2::aod::pidtofgeneric::TofPidNewCollision<MCLabeledTracksIU::iterator> bachelorTOFPID;
   o2::pid::tof::TOFResoParamsV2 mRespParamsV2;
 
   void initCCDB(aod::BCsWithTimestamps::iterator const& bc)
