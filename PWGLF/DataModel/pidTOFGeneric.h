@@ -170,7 +170,7 @@ template <typename TTrack>
 template <typename TCollision>
 float TofPidNewCollision<TTrack>::GetTOFNSigma(TTrack const& track, TCollision const& originalcol, TCollision const& correctedcol, bool EnableBCAO2D)
 {
-  //return TofPidNewCollision<TTrack>::GetTOFNSigma(pidType, track, originalcol, correctedcol, EnableBCAO2D);
+  // return TofPidNewCollision<TTrack>::GetTOFNSigma(pidType, track, originalcol, correctedcol, EnableBCAO2D);
   return GetTOFNSigma(pidType, track, originalcol, correctedcol, EnableBCAO2D);
 }
 
