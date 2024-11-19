@@ -216,6 +216,30 @@ struct decay3bodyBuilder {
     Configurable<float> maxChi2topo{"kfparticleConfigurations.maxChi2topo", 1000., "Maximum chi2 topological with KFParticle"};
   } kfparticleConfigurations;
 
+  //------------------------------------------------------------------
+  // Sets for event mixing
+  struct : ConfigurableGroup {
+    Configurable<int> nUseMixedEvent{"nUseMixedEvent", 5, "nUseMixedEvent"};
+    Configurable<bool> em_event_sel8_selection{"em_event_sel8_selection", true, "event selection count post sel8 cut"};
+    Configurable<float> etacut{"etacut", 0.9, "etacut"};
+    Configurable<float> minProtonPt{"minProtonPt", 0.3, "minProtonPt"};
+    Configurable<float> maxProtonPt{"maxProtonPt", 5, "maxProtonPt"};
+    Configurable<float> minPionPt{"minPionPt", 0.1, "minPionPt"};
+    Configurable<float> maxPionPt{"maxPionPt", 1.2, "maxPionPt"};
+    Configurable<float> minDeuteronPt{"minDeuteronPt", 0.6, "minDeuteronPt"};
+    Configurable<float> maxDeuteronPt{"maxDeuteronPt", 10, "maxDeuteronPt"};
+    Configurable<int> mintpcNClsproton{"mintpcNClsproton", 90, "min tpc Nclusters for proton"};
+    Configurable<int> mintpcNClspion{"mintpcNClspion", 70, "min tpc Nclusters for pion"};
+    Configurable<int> mintpcNClsbachelor{"mintpcNClsbachelor", 100, "min tpc Nclusters for bachelor"};
+    Configurable<float> emTpcPidNsigmaCut{"emTpcPidNsigmaCut", 5, "emTpcPidNsigmaCut"};
+  } EMTrackSel;
+
+  Preslice<TrackExtPIDIUwithEvTimes> tracksperCol = aod::track::collisionId;
+  SliceCache cache;
+  ConfigurableAxis axisPosZ{"axisPosZ", {40, -10, 10}, "Mixing bins - posZ"};
+  ConfigurableAxis axisCentrality{"axisCentrality", {10, 0, 100}, "Mixing bins - centrality"};
+  using BinningType = ColumnBinningPolicy<aod::collision::PosZ, aod::cent::CentFT0C>;
+
   // Filters and slices
   // Filter collisionFilter = (aod::evsel::sel8 == true && nabs(aod::collision::posZ) < 10.f);
   Preslice<aod::Decay3Bodys> perCollision = o2::aod::decay3body::collisionId;
@@ -1188,30 +1212,6 @@ struct decay3bodyBuilder {
     }
   }
   PROCESS_SWITCH(decay3bodyBuilder, processRun3, "Produce DCA fitter decay3body tables", true);
-
-  //------------------------------------------------------------------
-  // Sets for event mixing
-  struct : ConfigurableGroup {
-    Configurable<int> nUseMixedEvent{"nUseMixedEvent", 5, "nUseMixedEvent"};
-    Configurable<bool> em_event_sel8_selection{"em_event_sel8_selection", true, "event selection count post sel8 cut"};
-    Configurable<float> etacut{"etacut", 0.9, "etacut"};
-    Configurable<float> minProtonPt{"minProtonPt", 0.3, "minProtonPt"};
-    Configurable<float> maxProtonPt{"maxProtonPt", 5, "maxProtonPt"};
-    Configurable<float> minPionPt{"minPionPt", 0.1, "minPionPt"};
-    Configurable<float> maxPionPt{"maxPionPt", 1.2, "maxPionPt"};
-    Configurable<float> minDeuteronPt{"minDeuteronPt", 0.6, "minDeuteronPt"};
-    Configurable<float> maxDeuteronPt{"maxDeuteronPt", 10, "maxDeuteronPt"};
-    Configurable<int> mintpcNClsproton{"mintpcNClsproton", 90, "min tpc Nclusters for proton"};
-    Configurable<int> mintpcNClspion{"mintpcNClspion", 70, "min tpc Nclusters for pion"};
-    Configurable<int> mintpcNClsbachelor{"mintpcNClsbachelor", 100, "min tpc Nclusters for bachelor"};
-    Configurable<float> emTpcPidNsigmaCut{"emTpcPidNsigmaCut", 5, "emTpcPidNsigmaCut"};
-  } EMTrackSel;
-
-  Preslice<TrackExtPIDIUwithEvTimes> tracksperCol = aod::track::collisionId;
-  SliceCache cache;
-  ConfigurableAxis axisPosZ{"axisPosZ", {40, -10, 10}, "Mixing bins - posZ"};
-  ConfigurableAxis axisCentrality{"axisCentrality", {10, 0, 100}, "Mixing bins - centrality"};
-  using BinningType = ColumnBinningPolicy<aod::collision::PosZ, aod::cent::CentFT0C>;
 
   //------------------------------------------------------------------
   // Event-mixing background
