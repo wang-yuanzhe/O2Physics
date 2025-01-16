@@ -83,8 +83,10 @@ class svPoolCreator
   {
     if (pdgHypo != track0Pdg && pdgHypo != track1Pdg) {
       LOG(debug) << "Wrong pdg hypothesis";
+      LOG(info) << "Wrong pdg hypothesis";
       return;
     }
+    LOG(info) << "Appending track: " << trackCand.globalIndex() << " with pdg hypothesis: " << pdgHypo;
     bool isDau0 = pdgHypo == track0Pdg;
     constexpr uint64_t BcInvalid = -1;
     uint64_t globalBC = BcInvalid;
@@ -105,12 +107,16 @@ class svPoolCreator
         break;
       }
     } else {
+      LOG(info) << "No collision found for track: " << trackCand.globalIndex();
       globalBC = BcInvalid;
     }
 
     if (globalBC == BcInvalid) {
+      LOG(info) << "No BC found for track: " << trackCand.globalIndex();
       return;
     }
+
+    LOG(info) << "Global BC: " << globalBC;
 
     uint64_t firstBC = globalBC < bOffsetMax ? 0 : globalBC - bOffsetMax;
     uint64_t lastBC = globalBC + bOffsetMax;
@@ -162,7 +168,7 @@ class svPoolCreator
         thresholdTime = 4. * std::sqrt(sigmaTimeRes2);
         thresholdTime += timeMarginNS;
       }
-      // LOG(info) << "Threshold time: " << thresholdTime << " isPVContributor: " << trackCand.isPVContributor() << " time margin: " << timeMarginNS;
+      LOG(info) << "Threshold time: " << thresholdTime << " isPVContributor: " << trackCand.isPVContributor() << " time margin: " << timeMarginNS;
       if (std::abs(deltaTime) > thresholdTime) {
         continue;
       }
@@ -177,7 +183,8 @@ class svPoolCreator
       int poolIndex = (1 - isDau0) * 2 + (trackCand.sign() < 0);
       trForpool.Idxtr = trackCand.globalIndex();
       trForpool.collBracket = {static_cast<int>(collIdx), static_cast<int>(collIdx)};
-      // LOG(info) << "Adding track to pool: " << trForpool.Idxtr << " with bracket: " << trForpool.collBracket.getMin() << " " << trForpool.collBracket.getMax() << " and pool index: " << poolIndex;
+      LOG(info) << "poolIndex: " << poolIndex;
+      LOG(info) << "Adding track to pool: " << trForpool.Idxtr << " with bracket: " << trForpool.collBracket.getMin() << " " << trForpool.collBracket.getMax() << " and pool index: " << poolIndex;
       trackCandPool[poolIndex].emplace_back(trForpool);
       tmap[trackCand.globalIndex()] = {trackCandPool[poolIndex].size() - 1, poolIndex};
     }
@@ -190,6 +197,9 @@ class svPoolCreator
     gsl::span<std::vector<TrackCand>> track0Pool{trackCandPool.data(), 2};
     gsl::span<std::vector<TrackCand>> track1Pool{trackCandPool.data() + 2, 2};
     std::array<std::vector<int>, 2> mVtxTrack0{}; // 1st pos. and neg. track of the kink pool for each vertex
+
+    LOG(info) << "Track0 pool size: " << track0Pool[0].size() << " " << track0Pool[1].size();
+    LOG(info) << "Track1 pool size: " << track1Pool[0].size() << " " << track1Pool[1].size();
 
     for (int i = 0; i < 2; i++) {
       mVtxTrack0[i].clear();

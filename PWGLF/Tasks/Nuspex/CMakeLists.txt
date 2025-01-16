@@ -149,6 +149,11 @@ o2physics_add_dpl_workflow(he3-from-hypertriton-map
     PUBLIC_LINK_LIBRARIES O2Physics::AnalysisCore
     COMPONENT_NAME Analysis)
 
+o2physics_add_dpl_workflow(hyperhelium4sigma-analysis
+    SOURCES hyperhelium4sigmaAnalysis.cxx
+    PUBLIC_LINK_LIBRARIES O2::DCAFitter O2Physics::AnalysisCore O2::TOFBase
+    COMPONENT_NAME Analysis)
+
 if(FastJet_FOUND)
 o2physics_add_dpl_workflow(angular-correlations-in-jets
     SOURCES AngularCorrelationsInJets.cxx
