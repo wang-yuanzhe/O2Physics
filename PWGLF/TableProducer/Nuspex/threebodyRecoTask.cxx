@@ -101,7 +101,7 @@ struct ThreebodyRecoTask {
   //------------------------------------------------------------------
   PresliceUnsorted<aod::Vtx3BodyDatas> perCollisionVtx3BodyDatas = o2::aod::vtx3body::collisionId;
 
-  //Configurable for trigger selection
+  // Configurable for trigger selection
   Configurable<std::string> triggerList{"triggerList", "fH3L3Body", "List of triggers used to select events"};
   Configurable<bool> cfgOnlyKeepInterestedTrigger{"cfgOnlyKeepInterestedTrigger", false, "Flag to keep only interested trigger"};
   // Configuration to enable like-sign analysis
@@ -340,8 +340,7 @@ struct ThreebodyRecoTask {
       bool zorroSelected = zorro.isSelected(bc.globalBC()); /// Just let Zorro do the accounting
       if (zorroSelected) {
         registry.fill(HIST("hEventCounter"), 3.5);
-      }
-      else{
+      } else {
         if (cfgOnlyKeepInterestedTrigger) {
           return false;
         }
