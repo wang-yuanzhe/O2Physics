@@ -12,30 +12,30 @@
 // Search for hyperhe4sigma kink decay topology, copied from hyperkinkRecoTask.cxx
 // ==============================================================================
 
-#include <array>
-
-#include "Framework/runDataProcessing.h"
-#include "Framework/AnalysisTask.h"
-#include "Framework/AnalysisDataModel.h"
-#include "Framework/ASoAHelpers.h"
-#include "ReconstructionDataFormats/Track.h"
-#include "Common/Core/trackUtilities.h"
-#include "Common/DataModel/EventSelection.h"
-#include "Common/DataModel/Multiplicity.h"
-#include "Common/DataModel/Centrality.h"
-#include "DetectorsBase/Propagator.h"
-#include "DetectorsBase/GeometryManager.h"
-#include "DataFormatsParameters/GRPObject.h"
-#include "DataFormatsParameters/GRPMagField.h"
-#include "CCDB/BasicCCDBManager.h"
-
-#include "Common/Core/PID/TPCPIDResponse.h"
-#include "DataFormatsTPC/BetheBlochAleph.h"
-#include "DCAFitter/DCAFitterN.h"
-
+#include "PWGLF/DataModel/LFHypernucleiTables.h"
 #include "PWGLF/DataModel/LFParticleIdentification.h"
 #include "PWGLF/Utils/svPoolCreator.h"
-#include "PWGLF/DataModel/LFHypernucleiTables.h"
+
+#include "Common/Core/PID/TPCPIDResponse.h"
+#include "Common/Core/trackUtilities.h"
+#include "Common/DataModel/Centrality.h"
+#include "Common/DataModel/EventSelection.h"
+#include "Common/DataModel/Multiplicity.h"
+
+#include "CCDB/BasicCCDBManager.h"
+#include "DCAFitter/DCAFitterN.h"
+#include "DataFormatsParameters/GRPMagField.h"
+#include "DataFormatsParameters/GRPObject.h"
+#include "DataFormatsTPC/BetheBlochAleph.h"
+#include "DetectorsBase/GeometryManager.h"
+#include "DetectorsBase/Propagator.h"
+#include "Framework/ASoAHelpers.h"
+#include "Framework/AnalysisDataModel.h"
+#include "Framework/AnalysisTask.h"
+#include "Framework/runDataProcessing.h"
+#include "ReconstructionDataFormats/Track.h"
+
+#include <array>
 
 using namespace o2;
 using namespace o2::framework;
@@ -477,7 +477,7 @@ struct hyperHe4sKinkRecoTask {
     }
     // auto& kinkPool = svCreator.getSVCandPool(collisions, !unlikeSignBkg);
     auto& kinkPool = svCreator.getSVCandPool(collisions, tracks, !unlikeSignBkg); // need qa code in svCreator
-    svCreator.printTrackCount(); // need qa code in svCreator
+    svCreator.printTrackCount();                                                  // need qa code in svCreator
     // LOG(info) << "SV pool size: " << kinkPool.size();
 
     for (auto& svCand : kinkPool) {
@@ -783,7 +783,7 @@ struct hyperHe4sKinkRecoTask {
       }
     }
   }
-  
+
   void initCCDB(aod::BCs::iterator const& bc)
   {
     if (mRunNumber == bc.runNumber()) {
